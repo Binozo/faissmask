@@ -145,5 +145,30 @@ namespace FaissMask.Internal
                 return ptr.ToUInt64();
             }
         }
+        
+        public void WriteIndex(string filename)
+        {
+            if (string.IsNullOrEmpty(filename))
+            {
+                throw new ArgumentNullException(nameof(filename));
+            }
+
+            var returnCode = NativeMethods.faiss_write_index_fname(this, filename);
+            if (returnCode != 0)
+            {
+                var lastError = NativeMethods.faiss_get_last_error();
+
+                if (string.IsNullOrEmpty(lastError))
+                {
+                    throw new IOException(
+                        $"An unknown error occurred trying to write the index '{filename}' (return code {returnCode})");
+                }
+                else
+                {
+                    throw new IOException(
+                        $"An error occurred trying to write the index '{filename}': {lastError} (return code {returnCode})");
+                }
+            }
+        }
     }
 }

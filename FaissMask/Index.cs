@@ -112,6 +112,11 @@ namespace FaissMask
             return Handle.DecodeVector(bytes);
         }
 
+        public void WriteIndex(string filename)
+        {
+            Handle.WriteIndex(filename);
+        }
+
         public void Dispose()
         {
             Handle?.Free();
